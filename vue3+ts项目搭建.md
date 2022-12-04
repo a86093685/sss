@@ -124,7 +124,7 @@ npm i eslint-plugin-prettier eslint-config-prettier -D
 
 虽然我们已经要求项目使用 eslint 了，但是不能保证组员提交代码之前都将 eslint 中的问题解决掉了：
 
-- 也就是我们希望保证代码仓库中的代码都是符合 eslint 规范的；
+- 也就是我们希望**保证代码仓库中的代码都是符合 eslint 规范**的；
 
 - 那么我们需要在组员执行 `git commit ` 命令的时候对其进行校验，如果不符合 eslint 规范，那么自动通过规范进行修复；
 
@@ -270,12 +270,12 @@ npx husky add .husky/commit-msg "npx --no-install commitlint --edit $1"
 
 vue.config.js 有三种配置方式：
 
-- 方式一：直接通过 CLI 提供给我们的选项来配置：
+- 方式一：**直接通过 CLI 提供给我们的选项来配置**：
   - 比如 publicPath：配置应用程序部署的子目录（默认是 `/`，相当于部署在 `https://www.my-app.com/`）；
   - 比如 outputDir：修改输出的文件夹；
-- 方式二：通过 configureWebpack 修改 webpack 的配置：
-  - 可以是一个对象，直接会被合并；
-  - 可以是一个函数，会接收一个 config，可以通过 config 来修改配置；
+- 方式二：**通过 configureWebpack 修改 webpack 的配置**：
+  - 可以是一个**对象，直接会被合并**；
+  - 可以是一个**函数**，会接收一个 config，可以通过 config 来修改配置；
 - 方式三：通过 chainWebpack 修改 webpack 的配置：
   - 是一个函数，会接收一个基于 [webpack-chain](https://github.com/mozilla-neutrino/webpack-chain) 的 config 对象，可以对配置进行修改；
 
@@ -318,6 +318,7 @@ npm install vue-router@next
 ```ts
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { RouteRecordRaw } from 'vue-router'
+//import type { RouteRecordRaw } from 'vue-router' 表明引入的是类型
 
 const routes: RouteRecordRaw[] = [
   {
