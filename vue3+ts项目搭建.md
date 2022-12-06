@@ -409,7 +409,7 @@ Element Plus，一套为开发者、设计师和产品经理准备的基于 Vue 
 安装 element-plus
 
 ```shell
-npm install element-plus
+npm install element-plus --save
 ```
 
 #### 2.4.1. 全局引入
@@ -418,15 +418,44 @@ npm install element-plus
 
 ```js
 import ElementPlus from 'element-plus'
-import 'element-plus/lib/theme-chalk/index.css'
+import 'element-plus/dist/index.css'
 
 import router from './router'
 import store from './store'
+
+//use本质是一个函数传入了App，或一个对象有install方法
 
 createApp(App).use(router).use(store).use(ElementPlus).mount('#app')
 ```
 
 #### 2.4.2. 局部引入
+
+安装插件
+
+```js
+npm install -D unplugin-vue-components unplugin-auto-import
+```
+
+```js
+// webpack.config.js
+const AutoImport = require('unplugin-auto-import/webpack')
+const Components = require('unplugin-vue-components/webpack')
+const { ElementPlusResolver } = require('unplugin-vue-components/resolvers')
+
+module.exports = {
+  // ...
+  plugins: [
+    AutoImport({
+      resolvers: [ElementPlusResolver()],
+    }),
+    Components({
+      resolvers: [ElementPlusResolver()],
+    }),
+  ],
+}
+```
+
+**下面方法暂时失效**
 
 也就是在开发中用到某个组件对某个组件进行引入：
 
@@ -500,32 +529,37 @@ module.exports = {
 - 所以我们可以将它们在全局注册一次；
 
 ```ts
+import { App } from 'vue'
+import 'element-plus/theme-chalk/base.css'
+// import 'element-plus/theme-chalk/el-button.css'
 import {
   ElButton,
-  ElTable,
-  ElAlert,
-  ElAside,
-  ElAutocomplete,
-  ElAvatar,
-  ElBacktop,
-  ElBadge
+  ElCheckbox,
+  ElForm,
+  ElFormItem,
+  ElInput,
+  ElLink,
+  ElRadio,
+  ElTabPane,
+  ElTabs
 } from 'element-plus'
-
-const app = createApp(App)
-
+// 数组好遍历
 const components = [
   ElButton,
-  ElTable,
-  ElAlert,
-  ElAside,
-  ElAutocomplete,
-  ElAvatar,
-  ElBacktop,
-  ElBadge
+  ElForm,
+  ElFormItem,
+  ElInput,
+  ElRadio,
+  ElTabs,
+  ElTabPane,
+  ElCheckbox,
+  ElLink
 ]
 
-for (const cpn of components) {
-  app.component(cpn.name, cpn)
+export default function registerElement(app: App): void {
+  for (const component of components) {
+    app.component(component.name, component)
+  }
 }
 ```
 
@@ -679,3 +713,19 @@ pm.globals.set('token', res.data.token)
 接口文档 v2 版本：（有部分更新）
 
 https://documenter.getpostman.com/view/12387168/TzzDKb12
+
+## 四、区分不同环境
+
+如何区分环境变量呢？常见有三种方式：
+
++ 方式一：手动修改不同的变量；
+
++ 方式二：根据**process.env.NODE_ENV**的值进行区分；
+
++ 方式三：编写不同的环境变量配置文件；
+
+  ```js
+  console.log(process.env.NODE_ENV, process.env.VUE_APP_BASE_URL)
+  ```
+
+  
